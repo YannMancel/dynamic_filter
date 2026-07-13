@@ -71,8 +71,8 @@ void main() {
   });
 
   group('run', () {
-    test('Given the $AsyncEither throws a $FakeException '
-        'When the chain method is called to convert to another $RightEither '
+    test('Given the guarded $AsyncEither throws a $FakeException '
+        'When the run method is called to convert to another $RightEither '
         'Then all next methods are ignored '
         'And it returns a $LeftEither via the onError argument', () async {
       final asyncEither =
@@ -90,9 +90,9 @@ void main() {
       );
     });
 
-    test('Given the $AsyncEither will get a $RightEither '
-        'When the chain method is called to convert to another $RightEither '
-        'And an $FakeException is throws during the process '
+    test('Given the guarded $AsyncEither will get a $RightEither '
+        'When the run method is called to convert to another $RightEither '
+        'And a $FakeException is throws during the process '
         'Then all next methods are ignored '
         'And it returns a $LeftEither via the onError argument', () async {
       final asyncEither =
