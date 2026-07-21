@@ -1,5 +1,5 @@
-import 'package:dynamic_filter/domain/specification/implementations/and_composite_specification.dart';
-import 'package:dynamic_filter/domain/specification/implementations/or_composite_specification.dart';
+import 'package:dynamic_filter/domain/specification/impl/and_composite_specification.dart';
+import 'package:dynamic_filter/domain/specification/impl/or_composite_specification.dart';
 import 'package:dynamic_filter/domain/specification/specification.dart';
 
 abstract class AbstractSpecification<T> implements Specification<T> {

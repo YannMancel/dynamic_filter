@@ -1,5 +1,9 @@
-import 'package:dynamic_filter/presentation/logics/implementations/values_logic_by_value_notifier.dart';
-import 'package:dynamic_filter/presentation/logics/values_logic.dart';
+import 'package:dynamic_filter/presentation/logics/filter_logic/filter_logic.dart';
+import 'package:dynamic_filter/presentation/logics/filter_logic/impl/filter_logic_impl.dart';
+import 'package:dynamic_filter/presentation/logics/filtered_values_logic/filtered_values_logic.dart';
+import 'package:dynamic_filter/presentation/logics/filtered_values_logic/impl/filtered_values_logic_impl.dart';
+import 'package:dynamic_filter/presentation/logics/values_logic/impl/values_logic_impl.dart';
+import 'package:dynamic_filter/presentation/logics/values_logic/values_logic.dart';
 import 'package:flutter/material.dart';
 
 class ValuesPage extends StatefulWidget {
@@ -12,42 +16,70 @@ class ValuesPage extends StatefulWidget {
 }
 
 class _ValuesPageState extends State<ValuesPage> {
-  late ValuesLogic _logic;
+  late ValuesLogic _valuesLogic;
+  late FilterLogic _filterLogic;
+  late FilteredValuesLogic _filteredValuesLogic;
 
   @override
   void initState() {
     super.initState();
-    _logic = ValuesLogicByValueNotifier()..initialize();
+    _valuesLogic = ValuesLogicImpl()..initialize();
+    _filterLogic = FilterLogicImpl();
+    _filteredValuesLogic = FilteredValuesLogicImpl(
+      valuesNotifier: _valuesLogic.notifier,
+      filterNotifier: _filterLogic.notifier,
+    )..initialize();
   }
 
   @override
   void dispose() {
-    _logic.dispose();
+    _filteredValuesLogic.dispose();
+    _valuesLogic.dispose();
+    _filterLogic.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          _AppBarSliver(title: widget._title),
-          ValueListenableBuilder(
-            valueListenable: _logic.notifier,
-            builder: (_, asyncValue, _) => asyncValue.when(
-              idle: () => const _IdleSliver(),
-              loading: () => const _LoadingSliver(),
-              failure: (exception) => _FailureSliver(exception),
-              success: (values) => _SuccessSliver(values),
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _logic.filter(),
-        child: const Icon(Icons.filter_list),
+    return _LogicsInheritedWidget(
+      filterLogic: _filterLogic,
+      filteredValuesLogic: _filteredValuesLogic,
+      child: Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            _AppBarSliver(title: widget._title),
+            const _BodySliver(),
+          ],
+        ),
       ),
     );
+  }
+}
+
+class _LogicsInheritedWidget extends InheritedWidget {
+  const _LogicsInheritedWidget({
+    required this._filterLogic,
+    required this._filteredValuesLogic,
+    required super.child,
+  });
+
+  final FilterLogic _filterLogic;
+  final FilteredValuesLogic _filteredValuesLogic;
+
+  static _LogicsInheritedWidget? maybeOf(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<_LogicsInheritedWidget>();
+  }
+
+  static _LogicsInheritedWidget of(BuildContext context) {
+    final result = maybeOf(context);
+    assert(result != null, 'No _LogicsInheritedWidget found in context');
+    return result!;
+  }
+
+  @override
+  bool updateShouldNotify(covariant _LogicsInheritedWidget oldWidget) {
+    return _filterLogic != oldWidget._filterLogic ||
+        _filteredValuesLogic != oldWidget._filteredValuesLogic;
   }
 }
 
@@ -58,7 +90,35 @@ class _AppBarSliver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(title: Text(_title), pinned: true);
+    return SliverAppBar(
+      title: Text(_title),
+      pinned: true,
+      actions: [
+        IconButton(
+          onPressed: _LogicsInheritedWidget.of(context)._filterLogic.update,
+          icon: Icon(Icons.filter_list),
+        ),
+      ],
+    );
+  }
+}
+
+class _BodySliver extends StatelessWidget {
+  const _BodySliver();
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: _LogicsInheritedWidget.of(
+        context,
+      )._filteredValuesLogic.notifier,
+      builder: (_, asyncValue, _) => asyncValue.when(
+        idle: () => const _IdleSliver(),
+        loading: () => const _LoadingSliver(),
+        failure: (exception) => _FailureSliver(exception),
+        success: (values) => _SuccessSliver(values),
+      ),
+    );
   }
 }
 

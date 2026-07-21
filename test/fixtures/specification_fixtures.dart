@@ -1,4 +1,4 @@
-import 'package:dynamic_filter/domain/specification/implementations/leaf_specification.dart';
+import 'package:dynamic_filter/domain/specification/impl/leaf_specification.dart';
 
 final equalTo5 = LeafSpecification<int>((e) => e == 5, description: 'x == 5');
 final higherThan6 = LeafSpecification<int>((e) => e > 6, description: 'x > 6');

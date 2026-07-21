@@ -1,4 +1,4 @@
-import 'package:dynamic_filter/domain/specification/implementations/leaf_specification.dart';
+import 'package:dynamic_filter/domain/specification/impl/leaf_specification.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../fixtures/specification_fixtures.dart';
