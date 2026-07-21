@@ -1,9 +1,7 @@
 import 'package:dynamic_filter/presentation/logics/filter_logic/filter_logic.dart';
-import 'package:dynamic_filter/presentation/logics/filter_logic/impl/filter_logic_impl.dart';
 import 'package:dynamic_filter/presentation/logics/filtered_values_logic/filtered_values_logic.dart';
-import 'package:dynamic_filter/presentation/logics/filtered_values_logic/impl/filtered_values_logic_impl.dart';
-import 'package:dynamic_filter/presentation/logics/values_logic/impl/values_logic_impl.dart';
 import 'package:dynamic_filter/presentation/logics/values_logic/values_logic.dart';
+import 'package:dynamic_filter/service_locator/service_locator.dart';
 import 'package:flutter/material.dart';
 
 class ValuesPage extends StatefulWidget {
@@ -23,11 +21,11 @@ class _ValuesPageState extends State<ValuesPage> {
   @override
   void initState() {
     super.initState();
-    _valuesLogic = ValuesLogicImpl()..initialize();
-    _filterLogic = FilterLogicImpl();
-    _filteredValuesLogic = FilteredValuesLogicImpl(
-      valuesNotifier: _valuesLogic.notifier,
-      filterNotifier: _filterLogic.notifier,
+    _valuesLogic = getIt<ValuesLogic>()..initialize();
+    _filterLogic = getIt<FilterLogic>();
+    _filteredValuesLogic = getIt<FilteredValuesLogic>(
+      param1: _valuesLogic.notifier,
+      param2: _filterLogic.notifier,
     )..initialize();
   }
 

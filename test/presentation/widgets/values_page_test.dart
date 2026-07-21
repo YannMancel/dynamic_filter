@@ -1,11 +1,24 @@
 import 'package:dynamic_filter/presentation/widgets/dynamic_filter_app.dart';
 import 'package:dynamic_filter/presentation/widgets/values_page.dart';
+import 'package:dynamic_filter/service_locator/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../widget_tester_extension.dart';
 
 void main() {
+  setUpAll(() {
+    configureDependencies();
+  });
+
+  setUp(() {
+    getIt.pushNewScope();
+  });
+
+  tearDown(() async {
+    await getIt.popScope();
+  });
+
   Finder findListTileByValue(int value) {
     return find.descendant(
       of: find.byType(ListTile),

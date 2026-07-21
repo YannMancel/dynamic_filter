@@ -16,8 +16,8 @@ void main() {
     valuesLogic = ValuesLogicImpl();
     filterLogic = FilterLogicImpl();
     filteredValuesLogic = FilteredValuesLogicImpl(
-      valuesNotifier: valuesLogic.notifier,
-      filterNotifier: filterLogic.notifier,
+      valuesLogic.notifier,
+      filterLogic.notifier,
     );
   });
 

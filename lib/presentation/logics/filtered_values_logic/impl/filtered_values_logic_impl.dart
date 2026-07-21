@@ -6,10 +6,8 @@ import 'package:dynamic_filter/presentation/logics/filtered_values_logic/filtere
 import 'package:flutter/foundation.dart';
 
 final class FilteredValuesLogicImpl implements FilteredValuesLogic {
-  FilteredValuesLogicImpl({
-    required this._valuesNotifier,
-    required this._filterNotifier,
-  }) : _notifier = ValueNotifier(const IdleAsyncValue());
+  FilteredValuesLogicImpl(this._valuesNotifier, this._filterNotifier)
+    : _notifier = ValueNotifier(const IdleAsyncValue());
 
   final ValueNotifier<AsyncValue<Exception, List<int>>> _valuesNotifier;
   final ValueNotifier<Specification<int>?> _filterNotifier;
