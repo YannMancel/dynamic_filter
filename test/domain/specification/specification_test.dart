@@ -6,7 +6,7 @@ import '../../fixtures/specification_fixtures.dart';
 void main() {
   test('should return correct items', () async {
     final specification = equalTo5.or(higherThan6.and(lowerThan10));
-    final filteredItems = itemsFrom1To10.where(
+    final filteredItems = itemsFrom1To20.where(
       (e) => specification.isSatisfiedBy(e),
     );
     expect(

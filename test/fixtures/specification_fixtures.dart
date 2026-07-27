@@ -7,6 +7,6 @@ final lowerThan10 = LeafSpecification<int>(
   description: 'x < 10',
 );
 
-final itemsFrom1To10 = List<int>.unmodifiable(
-  List.generate(10, (index) => index + 1),
+final itemsFrom1To20 = List<int>.unmodifiable(
+  List.generate(20, (index) => index + 1),
 );
