@@ -1,12 +1,31 @@
 import 'package:dynamic_filter/domain/specification/abstracts/abstract_specification.dart';
+import 'package:dynamic_filter/domain/specification/requests/specification_request.dart';
 import 'package:dynamic_filter/domain/specification/specification.dart';
 
 abstract class CompositeSpecification<T> extends AbstractSpecification<T> {
-  const CompositeSpecification(this._components);
+  late List<Specification<T>> _components;
 
-  final List<Specification<T>> _components;
+  CompositeSpecification(List<Specification<T>> components) {
+    for (final component in components) {
+      component.successor = this;
+    }
+    _components = components;
+  }
 
-  List<Specification<T>> get components => _components;
+  @override
+  void handle(SpecificationRequest<T> request) {
+    request.when(
+      delete: (specification) {
+        if (!_components.contains(specification)) {
+          successor?.handle(request);
+          return;
+        }
+        _components = _components.where((e) => e != specification).toList();
+      },
+    );
+  }
+
+  List<Specification<T>> get components => List.unmodifiable(_components);
 
   String get toStringComponentSeparator;
 

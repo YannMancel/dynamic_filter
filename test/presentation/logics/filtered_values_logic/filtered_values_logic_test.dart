@@ -81,7 +81,7 @@ void main() {
         final asyncValues = <AsyncValue<Exception, List<int>>>[];
         void listener() => asyncValues.add(filteredValuesLogic.notifier.value);
         filteredValuesLogic.notifier.addListener(listener);
-        filterNotifier.value = equalTo5;
+        filterNotifier.value = getEqualTo5();
         // to await the notify's update
         await Future.delayed(const Duration(milliseconds: 300));
         filteredValuesLogic.notifier.removeListener(listener);

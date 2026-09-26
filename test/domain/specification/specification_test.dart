@@ -4,8 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../fixtures/specification_fixtures.dart';
 
 void main() {
-  test('should return correct items', () async {
-    final specification = equalTo5.or(higherThan6.and(lowerThan10));
+  test('should return correct items', () {
+    final specification = getEqualTo5().or(
+      getHigherThan6().and(getLowerThan10()),
+    );
     final filteredItems = itemsFrom1To20.where(
       (e) => specification.isSatisfiedBy(e),
     );
@@ -20,7 +22,7 @@ void main() {
 
   group('toString', () {
     test("should display a correct message without the specification's "
-        "description", () async {
+        "description", () {
       final specification = LeafSpecification<int>((e) => e == 42);
       expect(
         specification.toString(),
@@ -29,8 +31,10 @@ void main() {
     });
 
     test("should display a correct message with the specification's "
-        "descriptions", () async {
-      final specification = equalTo5.or(higherThan6.and(lowerThan10));
+        "descriptions", () {
+      final specification = getEqualTo5().or(
+        getHigherThan6().and(getLowerThan10()),
+      );
       expect(specification.toString(), equals('(x == 5 || (x > 6 && x < 10))'));
     });
   });

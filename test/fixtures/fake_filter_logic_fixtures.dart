@@ -19,7 +19,7 @@ final class FakeFilterLogic implements FilterLogic {
   @override
   Future<void> update() async {
     assert(ChangeNotifier.debugAssertNotDisposed(_notifier));
-    _notifier.value = equalTo5;
+    _notifier.value = getEqualTo5();
   }
 
   @override

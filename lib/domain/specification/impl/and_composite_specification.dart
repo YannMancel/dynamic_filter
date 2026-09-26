@@ -1,7 +1,7 @@
 import 'package:dynamic_filter/domain/specification/abstracts/composite_specification.dart';
 
 final class AndCompositeSpecification<T> extends CompositeSpecification<T> {
-  const AndCompositeSpecification(super.components);
+  AndCompositeSpecification(super.components);
 
   @override
   bool isSatisfiedBy(T object) {
