@@ -5,9 +5,9 @@ import 'package:dynamic_filter/presentation/logics/values_logic/values_logic.dar
 import 'package:flutter/foundation.dart';
 
 final class ValuesLogicImpl implements ValuesLogic {
-  ValuesLogicImpl() : _notifier = ValueNotifier(const IdleAsyncValue());
-
   final ValueNotifier<AsyncValue<Exception, List<int>>> _notifier;
+
+  ValuesLogicImpl() : _notifier = ValueNotifier(const IdleAsyncValue());
 
   @override
   ValueNotifier<AsyncValue<Exception, List<int>>> get notifier => _notifier;

@@ -10,7 +10,7 @@ void main() {
       final lowerThan10 = getLowerThan10();
       final specification = getEqualTo5().or(getHigherThan6().and(lowerThan10));
       expect(specification.toString(), equals('(x == 5 || (x > 6 && x < 10))'));
-      lowerThan10.handle(SpecificationRequest<int>.delete(lowerThan10));
+      lowerThan10.handle(DeleteSpecificationRequest<int>(lowerThan10));
       expect(specification.toString(), equals('(x == 5 || (x > 6))'));
     });
 
@@ -20,7 +20,7 @@ void main() {
       final lowerThan10 = getLowerThan10();
       final specification = equalTo5.or(getHigherThan6().and(lowerThan10));
       expect(specification.toString(), equals('(x == 5 || (x > 6 && x < 10))'));
-      lowerThan10.handle(SpecificationRequest<int>.delete(equalTo5));
+      lowerThan10.handle(DeleteSpecificationRequest<int>(equalTo5));
       expect(specification.toString(), equals('((x > 6 && x < 10))'));
     });
   });

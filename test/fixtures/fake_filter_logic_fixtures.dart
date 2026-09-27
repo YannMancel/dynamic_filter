@@ -8,10 +8,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'specification_fixtures.dart';
 
 final class FakeFilterLogic implements FilterLogic {
+  final ValueNotifier<Specification<int>?> _notifier;
+
   FakeFilterLogic({Specification<int>? initialState})
     : _notifier = ValueNotifier(initialState);
-
-  final ValueNotifier<Specification<int>?> _notifier;
 
   @override
   ValueNotifier<Specification<int>?> get notifier => _notifier;
@@ -23,5 +23,5 @@ final class FakeFilterLogic implements FilterLogic {
   }
 
   @override
-  void dispose() {}
+  void dispose() => _notifier.dispose();
 }

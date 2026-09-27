@@ -111,10 +111,10 @@ final class LoadingAsyncValue<L, R> extends AsyncValue<L, R> {
 
 @immutable
 final class FailureAsyncValue<L, R> extends AsyncValue<L, R> {
-  const FailureAsyncValue(this.value);
-
   @visibleForTesting
   final L value;
+
+  const FailureAsyncValue(this.value);
 
   @override
   bool operator ==(Object other) =>
@@ -132,10 +132,10 @@ final class FailureAsyncValue<L, R> extends AsyncValue<L, R> {
 
 @immutable
 final class SuccessAsyncValue<L, R> extends AsyncValue<L, R> {
-  const SuccessAsyncValue(this.value);
-
   @visibleForTesting
   final R value;
+
+  const SuccessAsyncValue(this.value);
 
   @override
   bool operator ==(Object other) =>

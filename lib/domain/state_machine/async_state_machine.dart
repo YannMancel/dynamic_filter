@@ -29,6 +29,10 @@ typedef _OnError<S> = Future<S> Function(dynamic error, StackTrace stackTrace);
 ///   .state();
 /// ```
 final class AsyncStateMachine<S, T extends StateTransition<S>> {
+  final ValueGetter<Future<S>> _callback;
+  final Map<Type, Set<Type>> _transitionsByState;
+  final _OnError<S>? _onError;
+
   const AsyncStateMachine(
     this._callback, {
     required this._transitionsByState,
@@ -40,10 +44,6 @@ final class AsyncStateMachine<S, T extends StateTransition<S>> {
     required this._transitionsByState,
     required this._onError,
   });
-
-  final ValueGetter<Future<S>> _callback;
-  final Map<Type, Set<Type>> _transitionsByState;
-  final _OnError<S>? _onError;
 
   /// Allows to complete the [AsyncStateMachine] to retrieve the asynchronous
   /// [S] state.

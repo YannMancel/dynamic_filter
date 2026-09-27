@@ -81,9 +81,9 @@ final class LoadingAsyncValueTransition<L, R>
 @immutable
 final class FailureAsyncValueTransition<L, R>
     extends AsyncValueTransition<L, R> {
-  const FailureAsyncValueTransition(this._value);
-
   final L _value;
+
+  const FailureAsyncValueTransition(this._value);
 
   @override
   AsyncValue<L, R> get nextState => FailureAsyncValue<L, R>(_value);
@@ -102,9 +102,9 @@ final class FailureAsyncValueTransition<L, R>
 @immutable
 final class SuccessAsyncValueTransition<L, R>
     extends AsyncValueTransition<L, R> {
-  const SuccessAsyncValueTransition(this._value);
-
   final R _value;
+
+  const SuccessAsyncValueTransition(this._value);
 
   @override
   AsyncValue<L, R> get nextState => SuccessAsyncValue<L, R>(_value);

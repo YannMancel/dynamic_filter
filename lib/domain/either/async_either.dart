@@ -27,12 +27,12 @@ typedef _OnError<L> = Future<L> Function(dynamic error, StackTrace stackTrace);
 /// );
 /// ```
 final class AsyncEither<L, R> {
+  final ValueGetter<Future<Either<L, R>>> _callback;
+  final _OnError<L>? _onError;
+
   const AsyncEither(this._callback, {this._onError});
 
   const AsyncEither.guarded(this._callback, {required this._onError});
-
-  final ValueGetter<Future<Either<L, R>>> _callback;
-  final _OnError<L>? _onError;
 
   /// Allows to complete the [AsyncEither] to retrieve the asynchronous
   /// [Either].

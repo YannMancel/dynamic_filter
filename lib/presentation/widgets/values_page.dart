@@ -5,9 +5,9 @@ import 'package:dynamic_filter/service_locator/service_locator.dart';
 import 'package:flutter/material.dart';
 
 class ValuesPage extends StatefulWidget {
-  const ValuesPage({super.key, required this._title});
-
   final String _title;
+
+  const ValuesPage({super.key, required this._title});
 
   @override
   State<ValuesPage> createState() => _ValuesPageState();
@@ -55,14 +55,14 @@ class _ValuesPageState extends State<ValuesPage> {
 }
 
 class _LogicsInheritedWidget extends InheritedWidget {
+  final FilterLogic _filterLogic;
+  final FilteredValuesLogic _filteredValuesLogic;
+
   const _LogicsInheritedWidget({
     required this._filterLogic,
     required this._filteredValuesLogic,
     required super.child,
   });
-
-  final FilterLogic _filterLogic;
-  final FilteredValuesLogic _filteredValuesLogic;
 
   static _LogicsInheritedWidget? maybeOf(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<_LogicsInheritedWidget>();
@@ -82,9 +82,9 @@ class _LogicsInheritedWidget extends InheritedWidget {
 }
 
 class _AppBarSliver extends StatelessWidget {
-  const _AppBarSliver({required this._title});
-
   final String _title;
+
+  const _AppBarSliver({required this._title});
 
   @override
   Widget build(BuildContext context) {
@@ -141,9 +141,9 @@ class _LoadingSliver extends StatelessWidget {
 }
 
 class _FailureSliver extends StatelessWidget {
-  const _FailureSliver(this._exception);
-
   final Exception _exception;
+
+  const _FailureSliver(this._exception);
 
   @override
   Widget build(BuildContext context) {
@@ -157,9 +157,9 @@ class _FailureSliver extends StatelessWidget {
 }
 
 class _SuccessSliver extends StatelessWidget {
-  const _SuccessSliver(this._values);
-
   final List<int> _values;
+
+  const _SuccessSliver(this._values);
 
   @override
   Widget build(BuildContext context) {

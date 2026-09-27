@@ -4,9 +4,9 @@ import 'package:dynamic_filter/presentation/logics/filter_logic/filter_logic.dar
 import 'package:flutter/foundation.dart';
 
 final class FilterLogicImpl implements FilterLogic {
-  FilterLogicImpl() : _notifier = ValueNotifier(null);
-
   final ValueNotifier<Specification<int>?> _notifier;
+
+  FilterLogicImpl() : _notifier = ValueNotifier(null);
 
   @override
   ValueNotifier<Specification<int>?> get notifier => _notifier;

@@ -1,7 +1,7 @@
 final class FakeException implements Exception {
-  const FakeException(this._message);
-
   final String _message;
+
+  const FakeException(this._message);
 
   String get message => _message;
 

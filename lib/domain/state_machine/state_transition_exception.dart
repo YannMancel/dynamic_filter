@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 
 @immutable
 final class StateTransitionException implements Exception {
-  const StateTransitionException(this._message);
-
   final String _message;
+
+  const StateTransitionException(this._message);
 
   String get message => _message;
 

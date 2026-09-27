@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 final class FakeValuesLogic implements ValuesLogic {
+  final ValueNotifier<AsyncValue<Exception, List<int>>> _notifier;
+  final VoidCallback? _onInitialize;
+
   FakeValuesLogic(
     AsyncValue<Exception, List<int>> initialState, {
     this._onInitialize,
   }) : _notifier = ValueNotifier(initialState);
-
-  final ValueNotifier<AsyncValue<Exception, List<int>>> _notifier;
-  final VoidCallback? _onInitialize;
 
   @override
   ValueNotifier<AsyncValue<Exception, List<int>>> get notifier => _notifier;
@@ -24,5 +24,5 @@ final class FakeValuesLogic implements ValuesLogic {
   }
 
   @override
-  void dispose() {}
+  void dispose() => _notifier.dispose();
 }

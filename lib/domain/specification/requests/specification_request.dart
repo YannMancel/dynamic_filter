@@ -6,9 +6,6 @@ import 'package:flutter/foundation.dart';
 sealed class SpecificationRequest<T> implements Request {
   const SpecificationRequest();
 
-  const factory SpecificationRequest.delete(Specification<T> specification) =
-      DeleteSpecificationRequest<T>;
-
   R when<R>({required R Function(Specification<T>) delete}) {
     return switch (this) {
       DeleteSpecificationRequest<T>(:final specification) => delete(
@@ -18,7 +15,6 @@ sealed class SpecificationRequest<T> implements Request {
   }
 }
 
-@visibleForTesting
 @immutable
 final class DeleteSpecificationRequest<T> extends SpecificationRequest<T> {
   final Specification<T> specification;
