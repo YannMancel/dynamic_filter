@@ -27,6 +27,8 @@ abstract class CompositeSpecification<T> extends AbstractSpecification<T> {
 
   List<Specification<T>> get components => List.unmodifiable(_components);
 
+  void add(Specification<T> component) => _components.add(component);
+
   String get toStringComponentSeparator;
 
   @override

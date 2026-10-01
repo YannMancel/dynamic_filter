@@ -1,4 +1,5 @@
 import 'package:dynamic_filter/domain/chain_of_responsibility/handler.dart';
+import 'package:dynamic_filter/domain/specification/abstracts/composite_specification.dart';
 import 'package:dynamic_filter/domain/specification/impl/and_composite_specification.dart';
 import 'package:dynamic_filter/domain/specification/impl/or_composite_specification.dart';
 import 'package:dynamic_filter/domain/specification/requests/specification_request.dart';
@@ -20,11 +21,19 @@ abstract class AbstractSpecification<T> implements Specification<T> {
 
   @override
   Specification<T> and(Specification<T> specification) {
+    if (this is AndCompositeSpecification<T>) {
+      (this as CompositeSpecification<T>).add(specification);
+      return this;
+    }
     return AndCompositeSpecification([this, specification]);
   }
 
   @override
   Specification<T> or(Specification<T> specification) {
+    if (this is OrCompositeSpecification<T>) {
+      (this as CompositeSpecification<T>).add(specification);
+      return this;
+    }
     return OrCompositeSpecification([this, specification]);
   }
 
