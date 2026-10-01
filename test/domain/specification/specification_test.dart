@@ -26,7 +26,7 @@ void main() {
       final specification = LeafSpecification<int>((e) => e == 42);
       expect(
         specification.toString(),
-        equals('LeafSpecification{predicate: Closure: (int) => bool}'),
+        equals('LeafSpecification<int>{predicate: Closure: (int) => bool}'),
       );
     });
 
@@ -35,7 +35,7 @@ void main() {
       final specification = getEqualTo5().or(
         getHigherThan6().and(getLowerThan10()),
       );
-      expect(specification.toString(), equals('(x == 5 || (x > 6 && x < 10))'));
+      expect(specification.toString(), equals('(x = 5 || (x > 6 && x < 10))'));
     });
   });
 }

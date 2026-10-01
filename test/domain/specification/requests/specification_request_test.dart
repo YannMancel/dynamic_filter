@@ -9,9 +9,9 @@ void main() {
         "descriptions (deleting by direct parent)", () {
       final lowerThan10 = getLowerThan10();
       final specification = getEqualTo5().or(getHigherThan6().and(lowerThan10));
-      expect(specification.toString(), equals('(x == 5 || (x > 6 && x < 10))'));
+      expect(specification.toString(), equals('(x = 5 || (x > 6 && x < 10))'));
       lowerThan10.handle(DeleteSpecificationRequest<int>(lowerThan10));
-      expect(specification.toString(), equals('(x == 5 || (x > 6))'));
+      expect(specification.toString(), equals('(x = 5 || (x > 6))'));
     });
 
     test("should display a correct message with the specification's "
@@ -19,7 +19,7 @@ void main() {
       final equalTo5 = getEqualTo5();
       final lowerThan10 = getLowerThan10();
       final specification = equalTo5.or(getHigherThan6().and(lowerThan10));
-      expect(specification.toString(), equals('(x == 5 || (x > 6 && x < 10))'));
+      expect(specification.toString(), equals('(x = 5 || (x > 6 && x < 10))'));
       lowerThan10.handle(DeleteSpecificationRequest<int>(equalTo5));
       expect(specification.toString(), equals('((x > 6 && x < 10))'));
     });

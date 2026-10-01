@@ -6,4 +6,8 @@ abstract interface class Specification<T>
   bool isSatisfiedBy(T object);
   Specification<T> and(Specification<T> specification);
   Specification<T> or(Specification<T> specification);
+  bool get isRoot;
+  bool get isComposite;
+  bool get isAndComposite;
+  bool get isOrComposite;
 }

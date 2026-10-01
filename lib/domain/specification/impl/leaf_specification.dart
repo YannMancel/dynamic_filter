@@ -10,7 +10,7 @@ final class LeafSpecification<T> extends AbstractSpecification<T> {
 
   @override
   void handle(SpecificationRequest<T> request) {
-    request.when(delete: (_) => successor?.handle(request));
+    request.maybeWhen(orElse: () => successor?.handle(request));
   }
 
   @override
@@ -18,6 +18,6 @@ final class LeafSpecification<T> extends AbstractSpecification<T> {
 
   @override
   String toString() {
-    return description ?? 'LeafSpecification{predicate: $_predicate}';
+    return description ?? 'LeafSpecification<$T>{predicate: $_predicate}';
   }
 }

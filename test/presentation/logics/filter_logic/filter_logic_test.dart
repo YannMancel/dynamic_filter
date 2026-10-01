@@ -3,6 +3,8 @@ import 'package:dynamic_filter/presentation/logics/filter_logic/filter_logic.dar
 import 'package:dynamic_filter/presentation/logics/filter_logic/impl/filter_logic_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../fixtures/specification_fixtures.dart';
+
 void main() {
   late FilterLogic filterLogic;
 
@@ -14,13 +16,13 @@ void main() {
     expect(filterLogic.notifier.value, isNull);
   });
 
-  group('update', () {
-    test('When the update method is called '
+  group('filterByDefault', () {
+    test('When the filterByDefault method is called '
         'Then notifies a $Specification', () {
       final specifications = <Specification?>[];
       void listener() => specifications.add(filterLogic.notifier.value);
       filterLogic.notifier.addListener(listener);
-      filterLogic.update();
+      filterLogic.filterByDefault();
       filterLogic.notifier.removeListener(listener);
       expect(
         specifications,
@@ -30,11 +32,55 @@ void main() {
             isA<Specification<int>>().having(
               (e) => e.toString(),
               'specification',
-              equals('(x == 5 || (x > 6 && x < 12))'),
+              equals('(x = 5 || (x > 6 && x < 12))'),
             ),
           ),
         ]),
       );
+    });
+  });
+
+  group('delete', () {
+    test('When the delete method is called '
+        'Then notifies a $Specification', () {
+      final lowerThan10 = getLowerThan10();
+      filterLogic.notifier.value = getHigherThan6().and(lowerThan10);
+      final specifications = <Specification?>[];
+      void listener() => specifications.add(filterLogic.notifier.value);
+      filterLogic.notifier.addListener(listener);
+      expect(
+        filterLogic.notifier.value.toString(),
+        equals('(x > 6 && x < 10)'),
+      );
+      filterLogic.delete(lowerThan10);
+      filterLogic.notifier.removeListener(listener);
+      expect(
+        specifications,
+        allOf([
+          hasLength(1),
+          contains(
+            isA<Specification<int>>().having(
+              (e) => e.toString(),
+              'specification',
+              equals('(x > 6)'),
+            ),
+          ),
+        ]),
+      );
+    });
+  });
+
+  group('reset', () {
+    test('When the reset method is called '
+        'Then notifies a $Specification', () {
+      filterLogic.notifier.value = getEqualTo5();
+      final specifications = <Specification?>[];
+      void listener() => specifications.add(filterLogic.notifier.value);
+      filterLogic.notifier.addListener(listener);
+      expect(filterLogic.notifier.value.toString(), equals('x = 5'));
+      filterLogic.reset();
+      filterLogic.notifier.removeListener(listener);
+      expect(specifications, allOf([hasLength(1), contains(isNull)]));
     });
   });
 }

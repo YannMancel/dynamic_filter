@@ -33,16 +33,9 @@ abstract class CompositeSpecification<T> extends AbstractSpecification<T> {
 
   @override
   String toString() {
-    final buffer = StringBuffer();
-    for (int i = 0; i < components.length; i++) {
-      if (i == 0) buffer.write('(');
-      buffer.write('${components[i]}');
-      if (i < components.length - 1) {
-        buffer.write(' $toStringComponentSeparator ');
-        continue;
-      }
-      if (i == components.length - 1) buffer.write(')');
-    }
-    return buffer.toString();
+    final label = components
+        .map((component) => '$component')
+        .join(' $toStringComponentSeparator ');
+    return '($label)';
   }
 }

@@ -1,6 +1,7 @@
 import 'package:dynamic_filter/presentation/logics/filter_logic/filter_logic.dart';
 import 'package:dynamic_filter/presentation/logics/filtered_values_logic/filtered_values_logic.dart';
 import 'package:dynamic_filter/presentation/logics/values_logic/values_logic.dart';
+import 'package:dynamic_filter/presentation/widgets/filter_bottom_sheet.dart';
 import 'package:dynamic_filter/service_locator/service_locator.dart';
 import 'package:flutter/material.dart';
 
@@ -93,8 +94,19 @@ class _AppBarSliver extends StatelessWidget {
       pinned: true,
       actions: [
         IconButton(
-          onPressed: _LogicsInheritedWidget.of(context)._filterLogic.update,
+          onPressed: _LogicsInheritedWidget.of(
+            context,
+          )._filterLogic.filterByDefault,
           icon: Icon(Icons.filter_list),
+        ),
+        IconButton(
+          onPressed: () async {
+            await FilterBottomSheet.show(
+              context,
+              logic: _LogicsInheritedWidget.of(context)._filterLogic,
+            );
+          },
+          icon: Icon(Icons.edit),
         ),
       ],
     );
@@ -147,10 +159,17 @@ class _FailureSliver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return SliverFillRemaining(
       child: Padding(
         padding: const .all(16.0),
-        child: Center(child: Text('$_exception', textAlign: .center)),
+        child: Center(
+          child: Text(
+            '$_exception',
+            textAlign: .center,
+            style: textTheme.labelLarge,
+          ),
+        ),
       ),
     );
   }
@@ -163,22 +182,36 @@ class _SuccessSliver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_values.isEmpty) {
-      return const SliverFillRemaining(
-        child: Padding(
-          padding: .all(16.0),
-          child: Center(child: Text('No value according to this filter')),
-        ),
-      );
-    }
+    if (_values.isEmpty) return const _NoValueSliver();
+    final textTheme = Theme.of(context).textTheme;
     return SliverPadding(
       padding: const .only(left: 16, right: 16, bottom: 16),
       sliver: SliverList.builder(
         itemBuilder: (context, index) => Padding(
           padding: const .only(top: 16.0),
-          child: ListTile(title: Text('Value: ${_values[index]}')),
+          child: ListTile(
+            title: Text(
+              'Value: ${_values[index]}',
+              style: textTheme.labelLarge,
+            ),
+          ),
         ),
         itemCount: _values.length,
+      ),
+    );
+  }
+}
+
+class _NoValueSliver extends StatelessWidget {
+  const _NoValueSliver();
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return SliverFillRemaining(
+      child: Padding(
+        padding: const .all(16.0),
+        child: Center(child: Text('No value', style: textTheme.labelLarge)),
       ),
     );
   }

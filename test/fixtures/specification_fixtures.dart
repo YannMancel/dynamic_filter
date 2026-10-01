@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 // Into parent specification, each child specification has an inner state.
 // To avoid side effect, do not use final variable but use factory method.
 LeafSpecification<int> getEqualTo5() {
-  return LeafSpecification<int>((e) => e == 5, description: 'x == 5');
+  return LeafSpecification<int>((e) => e == 5, description: 'x = 5');
 }
 
 LeafSpecification<int> getHigherThan6() {

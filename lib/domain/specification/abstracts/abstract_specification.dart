@@ -37,5 +37,17 @@ abstract class AbstractSpecification<T> implements Specification<T> {
     return OrCompositeSpecification([this, specification]);
   }
 
+  @override
+  bool get isRoot => _successor == null;
+
+  @override
+  bool get isComposite => this is CompositeSpecification<T>;
+
+  @override
+  bool get isAndComposite => this is AndCompositeSpecification<T>;
+
+  @override
+  bool get isOrComposite => this is OrCompositeSpecification<T>;
+
   String? get description => _description;
 }

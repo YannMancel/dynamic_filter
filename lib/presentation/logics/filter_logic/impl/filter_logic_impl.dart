@@ -1,4 +1,5 @@
 import 'package:dynamic_filter/domain/specification/impl/leaf_specification.dart';
+import 'package:dynamic_filter/domain/specification/requests/specification_request.dart';
 import 'package:dynamic_filter/domain/specification/specification.dart';
 import 'package:dynamic_filter/presentation/logics/filter_logic/filter_logic.dart';
 import 'package:flutter/foundation.dart';
@@ -19,10 +20,10 @@ final class FilterLogicImpl implements FilterLogic {
   }
 
   @override
-  void update() {
+  void filterByDefault() {
     final equalTo5 = LeafSpecification<int>(
       (e) => e == 5,
-      description: 'x == 5',
+      description: 'x = 5',
     );
     final higherThan6 = LeafSpecification<int>(
       (e) => e > 6,
@@ -34,6 +35,16 @@ final class FilterLogicImpl implements FilterLogic {
     );
     setNotifier(equalTo5.or(higherThan6.and(lowerThan12)));
   }
+
+  @override
+  void delete(Specification<int> specification) {
+    specification.handle(DeleteSpecificationRequest(specification));
+    // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+    (_notifier as ChangeNotifier).notifyListeners();
+  }
+
+  @override
+  void reset() => _notifier.value = null;
 
   @override
   void dispose() => _notifier.dispose();

@@ -13,6 +13,16 @@ sealed class SpecificationRequest<T> implements Request {
       ),
     };
   }
+
+  R maybeWhen<R>({
+    R Function(Specification<T>)? delete,
+    required ValueGetter<R> orElse,
+  }) {
+    return switch (this) {
+      DeleteSpecificationRequest<T>(:final specification) =>
+        delete != null ? delete(specification) : orElse(),
+    };
+  }
 }
 
 @immutable

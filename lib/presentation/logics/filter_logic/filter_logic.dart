@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 
 abstract interface class FilterLogic {
   ValueNotifier<Specification<int>?> get notifier;
-  void update();
+  void filterByDefault();
+  void delete(Specification<int> specification);
+  void reset();
   void dispose();
 }
