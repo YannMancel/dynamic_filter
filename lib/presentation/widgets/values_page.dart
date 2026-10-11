@@ -55,6 +55,7 @@ class _ValuesPageState extends State<ValuesPage> {
   }
 }
 
+// TODO: Separate in two InheritedWidgets
 class _LogicsInheritedWidget extends InheritedWidget {
   final FilterLogic _filterLogic;
   final FilteredValuesLogic _filteredValuesLogic;
