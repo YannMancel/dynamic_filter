@@ -1,15 +1,15 @@
 import 'package:dynamic_filter/domain/async_value/async_value.dart';
-import 'package:dynamic_filter/domain/specification/specification.dart';
+import 'package:dynamic_filter/domain/filter/filter.dart';
 import 'package:dynamic_filter/presentation/logics/filtered_values_logic/filtered_values_logic.dart';
 import 'package:dynamic_filter/presentation/logics/filtered_values_logic/impl/filtered_values_logic_impl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../fixtures/specification_fixtures.dart';
+import '../../../fixtures/filter_fixtures.dart';
 
 void main() {
   late ValueNotifier<AsyncValue<Exception, List<int>>> valuesNotifier;
-  late ValueNotifier<Specification<int>?> filterNotifier;
+  late ValueNotifier<Filter<int>?> filterNotifier;
   late FilteredValuesLogic filteredValuesLogic;
 
   setUp(() {
@@ -71,7 +71,7 @@ void main() {
     test(
       "Given the values notifier equals to a $SuccessAsyncValue "
       'When the initialize method is called '
-      'And the filter notifier notifies a $Specification '
+      'And the filter notifier notifies a $Filter '
       'Then notifies a $LoadingAsyncValue and a $SuccessAsyncValue',
       () async {
         valuesNotifier.value = SuccessAsyncValue(itemsFrom1To20);

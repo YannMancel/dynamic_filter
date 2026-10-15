@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class NoSpecificationWidget extends StatelessWidget {
-  const NoSpecificationWidget({super.key});
+class NoFilterWidget extends StatelessWidget {
+  const NoFilterWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

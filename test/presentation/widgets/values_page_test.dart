@@ -13,7 +13,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../fixtures/exception_fixtures.dart';
 import '../../fixtures/fake_filter_logic_fixtures.dart';
 import '../../fixtures/fake_values_logic_fixtures.dart';
-import '../../fixtures/specification_fixtures.dart';
+import '../../fixtures/filter_fixtures.dart';
 import '../../widget_tester_extension.dart';
 
 void main() {

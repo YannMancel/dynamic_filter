@@ -1,13 +1,13 @@
 import 'package:dynamic_filter/domain/async_value/async_value.dart';
 import 'package:dynamic_filter/domain/async_value/async_value_state_machine.dart';
 import 'package:dynamic_filter/domain/async_value/async_value_transition.dart';
-import 'package:dynamic_filter/domain/specification/specification.dart';
+import 'package:dynamic_filter/domain/filter/filter.dart';
 import 'package:dynamic_filter/presentation/logics/filtered_values_logic/filtered_values_logic.dart';
 import 'package:flutter/foundation.dart';
 
 final class FilteredValuesLogicImpl implements FilteredValuesLogic {
   final ValueNotifier<AsyncValue<Exception, List<int>>> _valuesNotifier;
-  final ValueNotifier<Specification<int>?> _filterNotifier;
+  final ValueNotifier<Filter<int>?> _filterNotifier;
   final ValueNotifier<AsyncValue<Exception, List<int>>> _notifier;
 
   FilteredValuesLogicImpl(this._valuesNotifier, this._filterNotifier)
@@ -22,8 +22,6 @@ final class FilteredValuesLogicImpl implements FilteredValuesLogic {
     _valuesNotifier.addListener(_listener);
     _filterNotifier.addListener(_listener);
   }
-
-  Specification<int>? get _specificationOrNull => _filterNotifier.value;
 
   Future<void> _listener() async {
     setNotifier(
@@ -41,7 +39,7 @@ final class FilteredValuesLogicImpl implements FilteredValuesLogic {
                 (_) async => SuccessAsyncValueTransition(
                   List.unmodifiable(
                     values.where(
-                      (p) => _specificationOrNull?.isSatisfiedBy(p) ?? true,
+                      (p) => _filterNotifier.value?.isSatisfiedBy(p) ?? true,
                     ),
                   ),
                 ),

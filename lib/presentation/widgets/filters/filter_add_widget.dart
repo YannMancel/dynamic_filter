@@ -1,5 +1,5 @@
+import 'package:dynamic_filter/domain/filter/filter.dart';
 import 'package:dynamic_filter/domain/operations/arithmetic_operation.dart';
-import 'package:dynamic_filter/domain/specification/specification.dart';
 import 'package:dynamic_filter/presentation/widgets/arithmetic_operations/arithmetic_operation_dropdown_button.dart';
 import 'package:dynamic_filter/presentation/widgets/buttons/add_icon_button.dart';
 import 'package:dynamic_filter/presentation/widgets/buttons/check_icon_button.dart';
@@ -8,21 +8,21 @@ import 'package:dynamic_filter/presentation/widgets/rounded_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class SpecificationAddWidget extends StatefulWidget {
-  final Specification<int>? _specificationRoot;
+class FilterAddWidget extends StatefulWidget {
+  final Filter<int>? _rootFilter;
 
-  const SpecificationAddWidget({super.key, this._specificationRoot});
+  const FilterAddWidget({super.key, this._rootFilter});
 
   @override
-  State<SpecificationAddWidget> createState() => _SpecificationAddWidgetState();
+  State<FilterAddWidget> createState() => _FilterAddWidgetState();
 }
 
-class _SpecificationAddWidgetState extends State<SpecificationAddWidget> {
+class _FilterAddWidgetState extends State<FilterAddWidget> {
   late bool _showAddButton;
   late ArithmeticOperation? _arithmeticOperation;
   late TextEditingController _textEditController;
 
-  bool get _canAddSpecification {
+  bool get _canAddFilter {
     return _arithmeticOperation != null && _textEditController.text.isNotEmpty;
   }
 
@@ -86,9 +86,9 @@ class _SpecificationAddWidgetState extends State<SpecificationAddWidget> {
                     }),
                   ),
                   CheckIconButton(
-                    onPressed: _canAddSpecification
+                    onPressed: _canAddFilter
                         ? () {
-                            // TODO widget._specificationRoot
+                            // TODO widget._rootFilter
                           }
                         : null,
                   ),

@@ -1,10 +1,10 @@
-import 'package:dynamic_filter/domain/specification/specification.dart';
+import 'package:dynamic_filter/domain/filter/filter.dart';
 import 'package:dynamic_filter/presentation/logics/filter_logic/filter_logic.dart';
-import 'package:dynamic_filter/presentation/widgets/specifications/filter_logic_inherited_widget.dart';
-import 'package:dynamic_filter/presentation/widgets/specifications/no_specification_widget.dart';
-import 'package:dynamic_filter/presentation/widgets/specifications/specification_add_widget.dart';
-import 'package:dynamic_filter/presentation/widgets/specifications/specification_deep_display_widget.dart';
-import 'package:dynamic_filter/presentation/widgets/specifications/specification_value_listenable_builder.dart';
+import 'package:dynamic_filter/presentation/widgets/filters/filter_add_widget.dart';
+import 'package:dynamic_filter/presentation/widgets/filters/filter_deep_display_widget.dart';
+import 'package:dynamic_filter/presentation/widgets/filters/filter_logic_inherited_widget.dart';
+import 'package:dynamic_filter/presentation/widgets/filters/filter_value_listenable_builder.dart';
+import 'package:dynamic_filter/presentation/widgets/filters/no_filter_widget.dart';
 import 'package:flutter/material.dart';
 
 class FilterBottomSheet extends StatelessWidget {
@@ -41,9 +41,9 @@ class FilterBottomSheet extends StatelessWidget {
         slivers: [
           SliverPadding(
             padding: const .symmetric(horizontal: 16),
-            sliver: SpecificationValueListenableBuilder(
+            sliver: FilterValueListenableBuilder(
               noFilter: (_) => const _NoFilterSliver(),
-              filter: (_, specification) => _FilterSliver(specification),
+              filter: (_, filter) => _FilterSliver(filter),
             ),
           ),
         ],
@@ -62,7 +62,7 @@ class _NoFilterSliver extends StatelessWidget {
         child: Column(
           mainAxisSize: .min,
           spacing: 16,
-          children: [NoSpecificationWidget(), SpecificationAddWidget()],
+          children: [NoFilterWidget(), FilterAddWidget()],
         ),
       ),
     );
@@ -70,14 +70,12 @@ class _NoFilterSliver extends StatelessWidget {
 }
 
 class _FilterSliver extends StatelessWidget {
-  final Specification<int> _specification;
+  final Filter<int> _filter;
 
-  const _FilterSliver(this._specification);
+  const _FilterSliver(this._filter);
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: SpecificationDeepDisplayWidget(_specification),
-    );
+    return SliverToBoxAdapter(child: FilterDeepDisplayWidget(_filter));
   }
 }

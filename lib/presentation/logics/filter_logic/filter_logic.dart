@@ -1,10 +1,10 @@
-import 'package:dynamic_filter/domain/specification/specification.dart';
+import 'package:dynamic_filter/domain/filter/filter.dart';
 import 'package:flutter/foundation.dart';
 
 abstract interface class FilterLogic {
-  ValueNotifier<Specification<int>?> get notifier;
+  ValueNotifier<Filter<int>?> get notifier;
   void filterByDefault();
-  void delete(Specification<int> specification);
+  void delete(Filter<int> filter);
   void reset();
   void dispose();
 }
