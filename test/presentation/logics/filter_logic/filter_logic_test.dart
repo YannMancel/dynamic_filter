@@ -44,7 +44,8 @@ void main() {
     test('When the delete method is called '
         'Then notifies a $Filter', () {
       final lowerThan10 = getLowerThan10();
-      filterLogic.notifier.value = getHigherThan6().and(lowerThan10);
+      filterLogic.notifier.value =
+          getHigherThan6().and(lowerThan10) as Filter<int>?;
       final filters = <Filter?>[];
       void listener() => filters.add(filterLogic.notifier.value);
       filterLogic.notifier.addListener(listener);

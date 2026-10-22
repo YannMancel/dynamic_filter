@@ -28,7 +28,7 @@ abstract class AbstractFilter<T> implements Filter<T> {
   }
 
   @override
-  Filter<T> and(Filter<T> filter) {
+  Filter<T> and(covariant Filter<T> filter) {
     if (isAndComposite) {
       (this as CompositeFilter<T>).addComponent(filter);
       return this;
@@ -37,7 +37,7 @@ abstract class AbstractFilter<T> implements Filter<T> {
   }
 
   @override
-  Filter<T> or(Filter<T> filter) {
+  Filter<T> or(covariant Filter<T> filter) {
     if (isOrComposite) {
       (this as CompositeFilter<T>).addComponent(filter);
       return this;
@@ -61,9 +61,7 @@ abstract class AbstractFilter<T> implements Filter<T> {
     RootFinderFilterRequest<T> request,
   ) {
     // ┌ —————— ┬ ——————————————————————————— ┐
-    // |        |                             |
-    // | IsRoot ├            Action           |
-    // |        |                             |
+    // | IsRoot |            Action           |
     // ├ —————— ┼ ——————————————————————————— ┤
     // |   Yes  | UpdateFilterResponse + this |
     // ├ —————— ┼ ——————————————————————————— ┤

@@ -1,5 +1,5 @@
-abstract interface class Specification<R extends Specification<R, T>, T> {
+abstract interface class Specification<T> {
   bool isSatisfiedBy(T object);
-  R and(R specification);
-  R or(R specification);
+  Specification<T> and(Specification<T> specification);
+  Specification<T> or(Specification<T> specification);
 }
