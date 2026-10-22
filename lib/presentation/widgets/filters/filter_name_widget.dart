@@ -1,4 +1,6 @@
 import 'package:dynamic_filter/domain/filter/filter.dart';
+import 'package:dynamic_filter/domain/filter/implementations/and_composite_filter.dart';
+import 'package:dynamic_filter/domain/filter/implementations/or_composite_filter.dart';
 import 'package:flutter/material.dart';
 
 class FilterNameWidget extends StatelessWidget {
@@ -7,11 +9,11 @@ class FilterNameWidget extends StatelessWidget {
   const FilterNameWidget(this._filter, {super.key});
 
   String get _label {
-    return _filter.isAndComposite
-        ? 'AND'
-        : _filter.isOrComposite
-        ? 'OR'
-        : _filter.runtimeType.toString();
+    return switch (_filter) {
+      AndCompositeFilter<int>() => 'AND',
+      OrCompositeFilter<int>() => 'OR',
+      _ => _filter.runtimeType.toString(),
+    };
   }
 
   @override

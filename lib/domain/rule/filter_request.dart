@@ -41,7 +41,7 @@ final class RootFinderFilterRequest<T> extends FilterRequest<T> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DeleteFilterRequest<T> && runtimeType == other.runtimeType;
+      other is RootFinderFilterRequest<T> && runtimeType == other.runtimeType;
 
   @override
   int get hashCode => 0;

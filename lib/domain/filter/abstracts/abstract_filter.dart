@@ -1,72 +1,33 @@
-import 'package:dynamic_filter/domain/chain_of_responsibility/handler.dart';
-import 'package:dynamic_filter/domain/filter/abstracts/composite_filter.dart';
 import 'package:dynamic_filter/domain/filter/filter.dart';
-import 'package:dynamic_filter/domain/filter/filter_request.dart';
-import 'package:dynamic_filter/domain/filter/filter_response.dart';
 import 'package:dynamic_filter/domain/filter/implementations/and_composite_filter.dart';
 import 'package:dynamic_filter/domain/filter/implementations/or_composite_filter.dart';
+import 'package:flutter/foundation.dart';
 
+@immutable
 abstract class AbstractFilter<T> implements Filter<T> {
-  late Handler<FilterRequest<T>, FilterResponse<T>>? _next;
-
-  AbstractFilter() : _next = null;
-
-  FilterResponse<T> handleDeleteRequest(DeleteFilterRequest<T> request);
-
-  @override
-  Handler<FilterRequest<T>, FilterResponse<T>>? get next => _next;
-
-  @override
-  set next(Handler<FilterRequest<T>, FilterResponse<T>>? next) => _next = next;
-
-  @override
-  FilterResponse<T> handle(FilterRequest<T> request) {
-    return request.map(
-      delete: handleDeleteRequest,
-      rootFinder: _handleRootFinderRequest,
-    );
-  }
+  const AbstractFilter();
 
   @override
   Filter<T> and(covariant Filter<T> filter) {
-    if (isAndComposite) {
-      (this as CompositeFilter<T>).addComponent(filter);
-      return this;
+    if (this case AndCompositeFilter<T> composite) {
+      return composite.withComponents({...composite.components, filter});
     }
-    return AndCompositeFilter<T>([this, filter]);
+    return AndCompositeFilter<T>({this, filter});
   }
 
   @override
   Filter<T> or(covariant Filter<T> filter) {
-    if (isOrComposite) {
-      (this as CompositeFilter<T>).addComponent(filter);
-      return this;
+    if (this case OrCompositeFilter<T> composite) {
+      return composite.withComponents({...composite.components, filter});
     }
-    return OrCompositeFilter<T>([this, filter]);
+    return OrCompositeFilter<T>({this, filter});
   }
 
   @override
-  bool get isRoot => _next == null;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AbstractFilter<T> && runtimeType == other.runtimeType;
 
   @override
-  bool get isComposite => this is CompositeFilter<T>;
-
-  @override
-  bool get isAndComposite => this is AndCompositeFilter<T>;
-
-  @override
-  bool get isOrComposite => this is OrCompositeFilter<T>;
-
-  FilterResponse<T> _handleRootFinderRequest(
-    RootFinderFilterRequest<T> request,
-  ) {
-    // ┌ —————— ┬ ——————————————————————————— ┐
-    // | IsRoot |            Action           |
-    // ├ —————— ┼ ——————————————————————————— ┤
-    // |   Yes  | UpdateFilterResponse + this |
-    // ├ —————— ┼ ——————————————————————————— ┤
-    // |   No   |        next + request       |
-    // └ —————— ┴ ——————————————————————————— ┘
-    return next?.handle(request) ?? UpdateFilterResponse(this);
-  }
+  int get hashCode => 0;
 }

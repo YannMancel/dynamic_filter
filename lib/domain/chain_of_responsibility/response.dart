@@ -1,1 +1,1 @@
-abstract class Response {}
+abstract interface class Response {}

@@ -1,1 +1,1 @@
-abstract class Request {}
+abstract interface class Request {}

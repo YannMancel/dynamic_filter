@@ -2,7 +2,6 @@ import 'package:dynamic_filter/domain/filter/abstracts/composite_filter.dart';
 import 'package:dynamic_filter/domain/filter/filter.dart';
 import 'package:dynamic_filter/presentation/widgets/buttons/delete_icon_button.dart';
 import 'package:dynamic_filter/presentation/widgets/filters/filter_add_widget.dart';
-import 'package:dynamic_filter/presentation/widgets/filters/filter_logic_inherited_widget.dart';
 import 'package:dynamic_filter/presentation/widgets/filters/filter_name_widget.dart';
 import 'package:dynamic_filter/presentation/widgets/rounded_decoration.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +13,8 @@ class FilterDeepDisplayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_filter.isComposite) {
-      return _CompositeFilterWidget(_filter);
+    if (_filter case CompositeFilter<int> composite) {
+      return _CompositeFilterWidget(composite);
     }
     return _LeafFilterWidget(_filter);
   }
@@ -54,25 +53,21 @@ class _FilterDeleteIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return DeleteIconButton(
       onPressed: () {
-        final filterLogic = FilterLogicInheritedWidget.of(context).filterLogic;
-        if (_filter.isRoot) {
-          filterLogic.reset();
-          return;
-        }
-        filterLogic.delete(_filter);
+        //final filterLogic = FilterLogicInheritedWidget.of(context).filterLogic;
+        //if (_filter.isRoot) {
+        //  filterLogic.reset();
+        //  return;
+        //}
+        //filterLogic.delete(_filter);
       },
     );
   }
 }
 
 class _CompositeFilterWidget extends StatelessWidget {
-  final Filter<int> _filter;
+  final CompositeFilter<int> _filter;
 
   const _CompositeFilterWidget(this._filter);
-
-  List<Filter<int>> get _components {
-    return _filter is CompositeFilter<int> ? _filter.components : const [];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +90,7 @@ class _CompositeFilterWidget extends StatelessWidget {
                       mainAxisSize: .min,
                       spacing: 16,
                       children: [
-                        for (final component in _components)
+                        for (final component in _filter.components)
                           FilterDeepDisplayWidget(component),
                       ],
                     ),
