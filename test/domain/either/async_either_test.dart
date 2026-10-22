@@ -51,23 +51,21 @@ void main() {
   });
 
   group('peek', () {
-    [fakeLeftEither, fakeRightEither]
-        .map(
-          (either) => test(
-            'Given the $AsyncEither will get a ${either.runtimeType} '
-            'When the peek method is called '
-            'Then the correct action is performed during the completion',
-            () async {
-              bool isCorrectAction = false;
-              final asyncEither = AsyncEither(
-                () async => either,
-              ).peek((e) => isCorrectAction = (e == either));
-              await expectLater(asyncEither.run(), completion(equals(either)));
-              expect(isCorrectAction, isTrue);
-            },
-          ),
-        )
-        .toList();
+    for (final either in [fakeLeftEither, fakeRightEither]) {
+      test(
+        'Given the $AsyncEither will get a ${either.runtimeType} '
+        'When the peek method is called '
+        'Then the correct action is performed during the completion',
+        () async {
+          bool isCorrectAction = false;
+          final asyncEither = AsyncEither(
+            () async => either,
+          ).peek((e) => isCorrectAction = (e == either));
+          await expectLater(asyncEither.run(), completion(equals(either)));
+          expect(isCorrectAction, isTrue);
+        },
+      );
+    }
   });
 
   group('run', () {

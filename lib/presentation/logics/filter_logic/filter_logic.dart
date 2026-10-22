@@ -5,6 +5,5 @@ abstract interface class FilterLogic {
   ValueNotifier<Filter<int>?> get notifier;
   void filterByDefault();
   void delete(Filter<int> filter);
-  void reset();
   void dispose();
 }

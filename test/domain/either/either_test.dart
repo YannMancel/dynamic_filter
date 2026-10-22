@@ -6,111 +6,83 @@ import '../../fixtures/exception_fixtures.dart';
 
 void main() {
   group('isLeft', () {
-    [
-          (either: fakeLeftEither, isLeft: isTrue),
-          (either: fakeRightEither, isLeft: isFalse),
-        ]
-        .map(
-          (config) =>
-              test('Given the $Either is a ${config.either.runtimeType} '
-                  'When the isLeft getter is called '
-                  'Then it returns ${config.isLeft}', () {
-                expect(config.either.isLeft, config.isLeft);
-              }),
-        )
-        .toList();
+    for (final (either, isLeft) in [
+      (fakeLeftEither, true),
+      (fakeRightEither, false),
+    ]) {
+      test('Given the $Either is a ${either.runtimeType} '
+          'When the isLeft getter is called '
+          'Then it returns $isLeft', () {
+        expect(either.isLeft, equals(isLeft));
+      });
+    }
   });
 
   group('isRight', () {
-    [
-          (either: fakeLeftEither, isRight: isFalse),
-          (either: fakeRightEither, isRight: isTrue),
-        ]
-        .map(
-          (config) =>
-              test('Given the $Either is a ${config.either.runtimeType} '
-                  'When the isRight getter is called '
-                  'Then it returns ${config.isRight}', () {
-                expect(config.either.isRight, config.isRight);
-              }),
-        )
-        .toList();
+    for (final (either, isRight) in [
+      (fakeLeftEither, false),
+      (fakeRightEither, true),
+    ]) {
+      test('Given the $Either is a ${either.runtimeType} '
+          'When the isRight getter is called '
+          'Then it returns $isRight', () {
+        expect(either.isRight, equals(isRight));
+      });
+    }
   });
 
   group('fold', () {
-    [
-          (either: fakeLeftEither, expectedValue: 1),
-          (either: fakeRightEither, expectedValue: 2),
-        ]
-        .map(
-          (config) =>
-              test('Given the $Either is a ${config.either.runtimeType} '
-                  'When the fold method is called '
-                  'Then the correct callback is used', () {
-                expect(
-                  config.either.fold(left: (_) => 1, right: (_) => 2),
-                  equals(config.expectedValue),
-                );
-              }),
-        )
-        .toList();
+    for (final (either, expectedValue) in [
+      (fakeLeftEither, 1),
+      (fakeRightEither, 2),
+    ]) {
+      test('Given the $Either is a ${either.runtimeType} '
+          'When the fold method is called '
+          'Then the correct callback is used', () {
+        expect(
+          either.fold(left: (_) => 1, right: (_) => 2),
+          equals(expectedValue),
+        );
+      });
+    }
   });
 
   group('map', () {
-    [
-          (
-            either: fakeLeftEither,
-            newEither: const LeftEither<FakeException, int>(fakeException),
-          ),
-          (
-            either: fakeRightEither,
-            newEither: const RightEither<FakeException, int>(42),
-          ),
-        ]
-        .map(
-          (config) =>
-              test('Given the $Either is a ${config.either.runtimeType} '
-                  'When the map method is called '
-                  'Then the correct callback is used', () {
-                final either = config.either
-                    .peek(debugPrintEither)
-                    .map((_) => 42)
-                    .peek(debugPrintEither);
-                expect(either, equals(config.newEither));
-              }),
-        )
-        .toList();
+    for (final (either, newEither) in [
+      (fakeLeftEither, const LeftEither<FakeException, int>(fakeException)),
+      (fakeRightEither, const RightEither<FakeException, int>(42)),
+    ]) {
+      test('Given the $Either is a ${either.runtimeType} '
+          'When the map method is called '
+          'Then the correct callback is used', () {
+        expect(
+          either.peek(debugPrintEither).map((_) => 42).peek(debugPrintEither),
+          equals(newEither),
+        );
+      });
+    }
   });
 
   group('biMap', () {
-    [
-          (
-            either: fakeLeftEither,
-            newEither: const LeftEither<FakeException, int>(
-              FakeException('bar'),
-            ),
-          ),
-          (
-            either: fakeRightEither,
-            newEither: const RightEither<FakeException, int>(42),
-          ),
-        ]
-        .map(
-          (config) =>
-              test('Given the $Either is a ${config.either.runtimeType} '
-                  'When the biMap method is called '
-                  'Then the correct callback is used', () {
-                final either = config.either
-                    .peek(debugPrintEither)
-                    .biMap(
-                      left: (_) => const FakeException('bar'),
-                      right: (_) => 42,
-                    )
-                    .peek(debugPrintEither);
-                expect(either, equals(config.newEither));
-              }),
-        )
-        .toList();
+    for (final (either, newEither) in [
+      (
+        fakeLeftEither,
+        const LeftEither<FakeException, int>(FakeException('bar')),
+      ),
+      (fakeRightEither, const RightEither<FakeException, int>(42)),
+    ]) {
+      test('Given the $Either is a ${either.runtimeType} '
+          'When the biMap method is called '
+          'Then the correct callback is used', () {
+        expect(
+          either
+              .peek(debugPrintEither)
+              .biMap(left: (_) => const FakeException('bar'), right: (_) => 42)
+              .peek(debugPrintEither),
+          equals(newEither),
+        );
+      });
+    }
   });
 
   group('flatMap', () {
@@ -157,19 +129,17 @@ void main() {
   });
 
   group('peek', () {
-    [fakeLeftEither, fakeRightEither]
-        .map(
-          (either) => test('Given the $Either is a ${either.runtimeType} '
-              'When the peek method is called '
-              'Then the correct action is performed', () {
-            bool isCorrectAction = false;
-            final anotherEither = either.peek(
-              (e) => isCorrectAction = (e == either),
-            );
-            expect(isCorrectAction, isTrue);
-            expect(anotherEither, equals(either));
-          }),
-        )
-        .toList();
+    for (final either in [fakeLeftEither, fakeRightEither]) {
+      test('Given the $Either is a ${either.runtimeType} '
+          'When the peek method is called '
+          'Then the correct action is performed', () {
+        bool isCorrectAction = false;
+        final anotherEither = either.peek(
+          (e) => isCorrectAction = (e == either),
+        );
+        expect(isCorrectAction, isTrue);
+        expect(anotherEither, equals(either));
+      });
+    }
   });
 }

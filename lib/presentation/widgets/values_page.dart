@@ -2,6 +2,7 @@ import 'package:dynamic_filter/presentation/logics/filter_logic/filter_logic.dar
 import 'package:dynamic_filter/presentation/logics/filtered_values_logic/filtered_values_logic.dart';
 import 'package:dynamic_filter/presentation/logics/values_logic/values_logic.dart';
 import 'package:dynamic_filter/presentation/widgets/filter_bottom_sheet.dart';
+import 'package:dynamic_filter/presentation/widgets/filters/filter_logic_inherited_widget.dart';
 import 'package:dynamic_filter/service_locator/service_locator.dart';
 import 'package:flutter/material.dart';
 
@@ -40,46 +41,52 @@ class _ValuesPageState extends State<ValuesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return _LogicsInheritedWidget(
-      filterLogic: _filterLogic,
-      filteredValuesLogic: _filteredValuesLogic,
-      child: Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            _AppBarSliver(title: widget._title),
-            const _BodySliver(),
-          ],
+    return _FilteredValuesLogicInheritedWidget(
+      logic: _filteredValuesLogic,
+      child: FilterLogicInheritedWidget(
+        logic: _filterLogic,
+        child: Scaffold(
+          body: CustomScrollView(
+            slivers: [
+              _AppBarSliver(title: widget._title),
+              const _BodySliver(),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-// TODO: Separate in two InheritedWidgets
-class _LogicsInheritedWidget extends InheritedWidget {
-  final FilterLogic _filterLogic;
-  final FilteredValuesLogic _filteredValuesLogic;
+class _FilteredValuesLogicInheritedWidget extends InheritedWidget {
+  final FilteredValuesLogic _logic;
 
-  const _LogicsInheritedWidget({
-    required this._filterLogic,
-    required this._filteredValuesLogic,
+  const _FilteredValuesLogicInheritedWidget({
+    required this._logic,
     required super.child,
   });
 
-  static _LogicsInheritedWidget? maybeOf(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_LogicsInheritedWidget>();
+  static _FilteredValuesLogicInheritedWidget? maybeOf(BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<
+          _FilteredValuesLogicInheritedWidget
+        >();
   }
 
-  static _LogicsInheritedWidget of(BuildContext context) {
+  static _FilteredValuesLogicInheritedWidget of(BuildContext context) {
     final result = maybeOf(context);
-    assert(result != null, 'No _LogicsInheritedWidget found in context');
+    assert(
+      result != null,
+      'No _FilteredValuesLogicInheritedWidget found in context',
+    );
     return result!;
   }
 
   @override
-  bool updateShouldNotify(covariant _LogicsInheritedWidget oldWidget) {
-    return _filterLogic != oldWidget._filterLogic ||
-        _filteredValuesLogic != oldWidget._filteredValuesLogic;
+  bool updateShouldNotify(
+    covariant _FilteredValuesLogicInheritedWidget oldWidget,
+  ) {
+    return _logic != oldWidget._logic;
   }
 }
 
@@ -95,16 +102,16 @@ class _AppBarSliver extends StatelessWidget {
       pinned: true,
       actions: [
         IconButton(
-          onPressed: _LogicsInheritedWidget.of(
+          onPressed: FilterLogicInheritedWidget.of(
             context,
-          )._filterLogic.filterByDefault,
+          ).logic.filterByDefault,
           icon: Icon(Icons.filter_list),
         ),
         IconButton(
           onPressed: () async {
             await FilterBottomSheet.show(
               context,
-              logic: _LogicsInheritedWidget.of(context)._filterLogic,
+              logic: FilterLogicInheritedWidget.of(context).logic,
             );
           },
           icon: Icon(Icons.edit),
@@ -120,9 +127,9 @@ class _BodySliver extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: _LogicsInheritedWidget.of(
+      valueListenable: _FilteredValuesLogicInheritedWidget.of(
         context,
-      )._filteredValuesLogic.notifier,
+      )._logic.notifier,
       builder: (_, asyncValue, _) => asyncValue.when(
         idle: () => const _IdleSliver(),
         loading: () => const _LoadingSliver(),

@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../fixtures/filter_fixtures.dart';
+import '../../../fixtures/value_fixtures.dart';
 
 void main() {
   late ValueNotifier<AsyncValue<Exception, List<int>>> valuesNotifier;
@@ -44,7 +45,7 @@ void main() {
         void listener() => asyncValues.add(filteredValuesLogic.notifier.value);
         filteredValuesLogic.notifier.addListener(listener);
         await filteredValuesLogic.initialize();
-        valuesNotifier.value = SuccessAsyncValue(itemsFrom1To20);
+        valuesNotifier.value = SuccessAsyncValue(valuesFrom1To20);
         // to await the notify's update
         await Future.delayed(const Duration(milliseconds: 300));
         filteredValuesLogic.notifier.removeListener(listener);
@@ -58,8 +59,8 @@ void main() {
                 (e) => e.value,
                 'value',
                 allOf([
-                  hasLength(itemsFrom1To20.length),
-                  containsAllInOrder(itemsFrom1To20),
+                  hasLength(valuesFrom1To20.length),
+                  containsAllInOrder(valuesFrom1To20),
                 ]),
               ),
             ]),
@@ -74,14 +75,14 @@ void main() {
       'And the filter notifier notifies a $Filter '
       'Then notifies a $LoadingAsyncValue and a $SuccessAsyncValue',
       () async {
-        valuesNotifier.value = SuccessAsyncValue(itemsFrom1To20);
+        valuesNotifier.value = SuccessAsyncValue(valuesFrom1To20);
         await filteredValuesLogic.initialize();
         // to await the notify's update
         await Future.delayed(const Duration(milliseconds: 300));
         final asyncValues = <AsyncValue<Exception, List<int>>>[];
         void listener() => asyncValues.add(filteredValuesLogic.notifier.value);
         filteredValuesLogic.notifier.addListener(listener);
-        filterNotifier.value = getEqualTo5();
+        filterNotifier.value = equalTo5;
         // to await the notify's update
         await Future.delayed(const Duration(milliseconds: 300));
         filteredValuesLogic.notifier.removeListener(listener);
