@@ -35,7 +35,7 @@ class FilterBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FilterLogicInheritedWidget(
-      filterLogic: _logic,
+      logic: _logic,
       child: CustomScrollView(
         controller: _controller,
         slivers: [

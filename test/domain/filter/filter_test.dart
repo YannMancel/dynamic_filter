@@ -2,13 +2,17 @@ import 'package:dynamic_filter/domain/filter/implementations/leaf_filter.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../fixtures/filter_fixtures.dart';
+import '../../fixtures/value_fixtures.dart';
 
 void main() {
-  test('should return correct items', () {
-    final filter = getEqualTo5().or(getHigherThan6().and(getLowerThan10()));
-    final filteredItems = itemsFrom1To20.where((e) => filter.isSatisfiedBy(e));
+  test('should return correct values', () {
+    final filter = equalTo5.or(higherThan6.and(lowerThan10));
+    filter.toDeepString();
+    final filteredValues = valuesFrom1To20.where(
+      (e) => filter.isSatisfiedBy(e),
+    );
     expect(
-      filteredItems,
+      filteredValues,
       allOf([
         hasLength(equals(4)),
         containsAllInOrder(const [5, 7, 8, 9]),
@@ -25,7 +29,7 @@ void main() {
 
     test("should display a correct message with the filter's "
         "descriptions", () {
-      final filter = getEqualTo5().or(getHigherThan6().and(getLowerThan10()));
+      final filter = equalTo5.or(higherThan6.and(lowerThan10));
       expect(filter.toString(), equals('(x = 5 || (x > 6 && x < 10))'));
     });
   });

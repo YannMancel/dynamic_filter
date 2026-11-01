@@ -2,11 +2,11 @@ import 'package:dynamic_filter/presentation/logics/filter_logic/filter_logic.dar
 import 'package:flutter/material.dart';
 
 class FilterLogicInheritedWidget extends InheritedWidget {
-  final FilterLogic filterLogic;
+  final FilterLogic logic;
 
   const FilterLogicInheritedWidget({
     super.key,
-    required this.filterLogic,
+    required this.logic,
     required super.child,
   });
 
@@ -23,6 +23,6 @@ class FilterLogicInheritedWidget extends InheritedWidget {
 
   @override
   bool updateShouldNotify(covariant FilterLogicInheritedWidget oldWidget) {
-    return filterLogic != oldWidget.filterLogic;
+    return logic != oldWidget.logic;
   }
 }

@@ -14,7 +14,7 @@ class FilterValueListenableBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final filterLogic = FilterLogicInheritedWidget.of(context).filterLogic;
+    final filterLogic = FilterLogicInheritedWidget.of(context).logic;
     return ValueListenableBuilder(
       valueListenable: filterLogic.notifier,
       builder: (context, filter, _) {

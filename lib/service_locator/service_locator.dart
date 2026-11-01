@@ -6,7 +6,7 @@ import 'package:dynamic_filter/presentation/logics/filtered_values_logic/filtere
 import 'package:dynamic_filter/presentation/logics/filtered_values_logic/impl/filtered_values_logic_impl.dart';
 import 'package:dynamic_filter/presentation/logics/values_logic/impl/values_logic_impl.dart';
 import 'package:dynamic_filter/presentation/logics/values_logic/values_logic.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;

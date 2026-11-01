@@ -7,24 +7,43 @@ sealed class FilterResponse<T> implements Response {
   const FilterResponse();
 
   R when<R>({
-    required ValueGetter<R> noFilter,
+    required ValueGetter<R> empty,
+    required R Function(Filter<T>) same,
     required R Function(Filter<T>) update,
   }) {
     return switch (this) {
-      NoFilterResponse<T>() => noFilter(),
+      EmptyFilterResponse<T>() => empty(),
+      SameFilterResponse<T>(:final filter) => same(filter),
       UpdateFilterResponse<T>(:final filter) => update(filter),
     };
   }
 }
 
 @immutable
-final class NoFilterResponse<T> extends FilterResponse<T> {
-  const NoFilterResponse();
+final class SameFilterResponse<T> extends FilterResponse<T> {
+  final Filter<T> filter;
+
+  const SameFilterResponse(this.filter);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is NoFilterResponse<T> && runtimeType == other.runtimeType;
+      other is SameFilterResponse<T> &&
+          runtimeType == other.runtimeType &&
+          filter == other.filter;
+
+  @override
+  int get hashCode => filter.hashCode;
+}
+
+@immutable
+final class EmptyFilterResponse<T> extends FilterResponse<T> {
+  const EmptyFilterResponse();
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is EmptyFilterResponse<T> && runtimeType == other.runtimeType;
 
   @override
   int get hashCode => 0;

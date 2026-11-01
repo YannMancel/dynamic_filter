@@ -1,6 +1,7 @@
 import 'package:dynamic_filter/domain/filter/filter.dart';
-import 'package:dynamic_filter/domain/filter/filter_request.dart';
 import 'package:dynamic_filter/domain/filter/implementations/leaf_filter.dart';
+import 'package:dynamic_filter/domain/rule/filter_extension.dart';
+import 'package:dynamic_filter/domain/rule/filter_request.dart';
 import 'package:dynamic_filter/presentation/logics/filter_logic/filter_logic.dart';
 import 'package:flutter/foundation.dart';
 
@@ -29,15 +30,15 @@ final class FilterLogicImpl implements FilterLogic {
 
   @override
   void delete(Filter<int> filter) {
-    //_notifier.value = filter.handle(DeleteFilterRequest(filter));
-
-    filter.handle(DeleteFilterRequest(filter));
-    // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
-    (_notifier as ChangeNotifier).notifyListeners();
+    _notifier.value = _notifier.value
+        ?.convertToRuleUntilTarget(filter)
+        ?.handle(DeleteFilterRequest(filter))
+        .when(
+          empty: () => null,
+          same: (filter) => filter,
+          update: (filter) => filter,
+        );
   }
-
-  @override
-  void reset() => _notifier.value = null;
 
   @override
   void dispose() => _notifier.dispose();

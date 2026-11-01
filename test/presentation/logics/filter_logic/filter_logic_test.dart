@@ -43,9 +43,8 @@ void main() {
   group('delete', () {
     test('When the delete method is called '
         'Then notifies a $Filter', () {
-      final lowerThan10 = getLowerThan10();
-      filterLogic.notifier.value =
-          getHigherThan6().and(lowerThan10) as Filter<int>?;
+      final target = lowerThan10;
+      filterLogic.notifier.value = higherThan6.and(target);
       final filters = <Filter?>[];
       void listener() => filters.add(filterLogic.notifier.value);
       filterLogic.notifier.addListener(listener);
@@ -53,7 +52,7 @@ void main() {
         filterLogic.notifier.value.toString(),
         equals('(x > 6 && x < 10)'),
       );
-      filterLogic.delete(lowerThan10);
+      filterLogic.delete(target);
       filterLogic.notifier.removeListener(listener);
       expect(
         filters,
@@ -68,20 +67,6 @@ void main() {
           ),
         ]),
       );
-    });
-  });
-
-  group('reset', () {
-    test('When the reset method is called '
-        'Then notifies a $Filter', () {
-      filterLogic.notifier.value = getEqualTo5();
-      final filters = <Filter?>[];
-      void listener() => filters.add(filterLogic.notifier.value);
-      filterLogic.notifier.addListener(listener);
-      expect(filterLogic.notifier.value.toString(), equals('x = 5'));
-      filterLogic.reset();
-      filterLogic.notifier.removeListener(listener);
-      expect(filters, allOf([hasLength(1), contains(isNull)]));
     });
   });
 }
