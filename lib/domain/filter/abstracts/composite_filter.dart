@@ -29,7 +29,12 @@ abstract class CompositeFilter<T> extends AbstractFilter<T> {
           const DeepCollectionEquality().equals(_components, other._components);
 
   @override
-  int get hashCode => Object.hash(super.hashCode, _components);
+  int get hashCode {
+    return Object.hash(
+      super.hashCode,
+      const DeepCollectionEquality().hash(_components),
+    );
+  }
 
   Set<Filter<T>> get components => Set.unmodifiable(_components);
 }
